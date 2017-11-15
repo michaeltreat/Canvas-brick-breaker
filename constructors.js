@@ -1,36 +1,34 @@
 'use strict';
 
+
 const Grid = function(canvasId){
   this.canvas = document.getElementById(canvasId)
   this.ctx = this.canvas.getContext('2d')
   this.addListeners()
-  this.isPaused = true
+  this.draw()
+
+  Grid.allGrids.push(this)
+  this.isPaused = false
   this.bricks = []
   this.paddles = []
   this.balls = []
-  this.raf;
+  this.raf; // will hold referece to the current requestAnimationFrame.
   return this
 }
+Grid.allGrids = []
 
 Grid.prototype.addListeners = function(){
   this.canvas.addEventListener('click', () => {
-    console.log('elistener',this.draw)
     this.isPaused = !this.isPaused
+    var draw = this.draw.bind(this) // losing context of this here twice, so used an arrow func for the handler as it doesn't retain scope and bind to hold the ctx of this.
     if(this.isPaused){
-      console.log('Running', this);
-      var draw = this.draw.bind(this)
+      console.log('Running');
       this.raf = window.requestAnimationFrame(draw)
     }else{
-      console.log('Paused',this);
+      console.log('Paused');
       window.cancelAnimationFrame(this.raf)
     }
   })
-}
-
-Grid.prototype.draw = function(){
-  console.log('this is :', this);
-  this.ctx.clearRect(0,0,this.canvas.width, this.canvas.height)
-  this.drawGraph(50)
 }
 
 Grid.prototype.drawGraph = function(graphIncrements) {
@@ -57,6 +55,11 @@ Grid.prototype.drawGraph = function(graphIncrements) {
   }
   ctx.stroke()
   ctx.closePath()
+}
+
+Grid.prototype.draw = function(){
+  this.ctx.clearRect(0,0,this.canvas.width, this.canvas.height) // Clears entire canvas.
+  this.drawGraph(50)
 }
 
 var grid = new Grid('canvas')
