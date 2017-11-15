@@ -7,7 +7,7 @@ const Brick = function(x,y,width,height,id,hp,colors,canvas,ctx){
   this.h = height
   this.id = id
   this.hp = hp
-  this.colors = colors
+  this.colors = colors // The idea is as hp decreases,the colors change.
   this.canvas = canvas
   this.ctx = ctx
   Brick.bricks.push(this)
@@ -19,7 +19,7 @@ Brick.prototype.draw = function(){
   if(this.hp > 0){
     ctx.beginPath()
     ctx.rect(this.x,this.y,this.w,this.h)
-    ctx.fillStyle = this.colors[0]
+    ctx.fillStyle = this.colors[this.hp - 1]
     ctx.fill()
     ctx.closePath()
   }
