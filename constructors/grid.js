@@ -13,6 +13,7 @@ const Grid = function(canvasId){
   this.ctx = this.canvas.getContext('2d')
   this.addListeners()
   this.createBalls()
+  this.createBricks()
   this.draw()
   return this
 }
@@ -61,6 +62,10 @@ Grid.prototype.drawGraph = function(graphIncrements) {
 Grid.prototype.draw = function(){
   this.ctx.clearRect(0,0,this.canvas.width, this.canvas.height) // Clears entire canvas.
   this.drawGraph(50)
+
+  for(let j = 0; j < this.bricks.length; j++){
+    this.bricks[j].draw()
+  }
   for(let i = 0; i < this.balls.length; i++){
     this.balls[i].draw()
   }
@@ -74,5 +79,9 @@ Grid.prototype.createBalls = function(){
   this.balls.push(new Ball(300,40,-5,-4,5,this.balls.length,'red',this.canvas,this.ctx))
 }
 
+Grid.prototype.createBricks = function(){
+  this.bricks.push(new Brick(125,125,25,25,this.bricks.length,2,['black','green'],this.canvas,this.ctx))
+  this.bricks.push(new Brick(333,225,25,25,this.bricks.length,2,['black','green'],this.canvas,this.ctx))
+}
 new Grid('canvas')
 new Grid('canvas-1')
