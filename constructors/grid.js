@@ -3,7 +3,7 @@
 
 const Grid = function(canvasId){
 
-  this.isPaused = false
+  this.isPaused = true
   this.bricks = []
   this.paddles = []
   this.balls = []
@@ -22,7 +22,7 @@ Grid.prototype.addListeners = function(){
   this.canvas.addEventListener('click', () => {
     this.isPaused = !this.isPaused
     let draw = this.draw.bind(this) // losing context of this here twice, so used an arrow func for the handler as it doesn't retain scope and bind to hold the ctx of this.
-    if(this.isPaused){
+    if(!this.isPaused){
       console.log('Running');
       this.raf = window.requestAnimationFrame(draw)
     }else{
@@ -61,15 +61,18 @@ Grid.prototype.drawGraph = function(graphIncrements) {
 Grid.prototype.draw = function(){
   this.ctx.clearRect(0,0,this.canvas.width, this.canvas.height) // Clears entire canvas.
   this.drawGraph(50)
-  console.log(this.balls);
   for(let i = 0; i < this.balls.length; i++){
-    console.log(this)
     this.balls[i].draw()
   }
+  var draw = this.draw.bind(this) // Have to bind the context of 'this' again.
+  this.raf = requestAnimationFrame(draw)
+  if(this.isPaused) cancelAnimationFrame(this.raf) // This is here because the game starts paused, but we want to draw everything at least once and then immediately pause the game.
 }
 
 Grid.prototype.createBalls = function(){
   this.balls.push(new Ball(100,100,5,4,5,this.balls.length,'blue',this.canvas,this.ctx))
+  this.balls.push(new Ball(300,40,-5,-4,5,this.balls.length,'red',this.canvas,this.ctx))
 }
 
-let grid = new Grid('canvas')
+new Grid('canvas')
+new Grid('canvas-1')
