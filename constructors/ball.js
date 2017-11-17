@@ -1,6 +1,6 @@
 'use strict'
 
-const Ball = function(x,y,vx,vy,radius,id,color,canvas,ctx){
+const Ball = function(x,y,vx,vy,radius,id,color,canvas,ctx, colors){
 
   this.x = x
   this.y = y
@@ -10,6 +10,9 @@ const Ball = function(x,y,vx,vy,radius,id,color,canvas,ctx){
 
   this.id = id // Basically the index position in the Grid.balls array.
   this.color = color
+  this.colorRunner = 0 // holds the current value of the color in the color array.
+  this.runnerDelay = 4 // Delays changing the color for this amount of frames.
+  if(colors)this.colors = colors
   this.canvas = canvas
   this.ctx = ctx
   this.closeToWall = false
@@ -32,7 +35,11 @@ Ball.prototype.draw = function(){
 
   ctx.beginPath();
   ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, true);
-  ctx.fillStyle = this.color;
+
+  // If there is an array of colors, use that array to update the color property.
+  if(this.colors) this.chooseColor()
+
+  ctx.fillStyle = this.color // This uses the default color, or the updated value from .chooseColor()
   ctx.fill()
   ctx.closePath();
 
@@ -51,5 +58,15 @@ Ball.prototype.detectWall = function(){
 }
 
 Ball.prototype.detection = function(){
-  
+
+}
+
+Ball.prototype.chooseColor = function(){
+  this.color = this.colors[this.colorRunner] // Update the color property to what ever color we are currently on in the color array.
+  this.runnerDelay-- // This delays changing the color for a specific amount of frames....
+  if(this.runnerDelay === 0){ // ... Once it hits zero then change the color to the next/first color array and reset the delay.
+    this.colorRunner++
+    if(this.colorRunner > this.colors.length) this.colorRunner = 0 // If the color has been incremented past the length of the array, start the array over at 0.
+    this.runnerDelay = 4
+  }
 }

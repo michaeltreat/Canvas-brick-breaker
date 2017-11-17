@@ -71,9 +71,9 @@ Grid.prototype.drawGraph = function(graphIncrements) {
 
 // Functions to create the objects that will go onto our grid.
 Grid.prototype.createBalls = function(){
-  // params = x, y, vx, vy, radius, id, color , canvas, ctx.
-  this.balls.push(new Ball(100,100,-1,2,5,this.balls.length,'blue',this.canvas,this.ctx))
-  this.balls.push(new Ball(300,40,-5,-4,5,this.balls.length,'red',this.canvas,this.ctx))
+  // params = x, y, vx, vy, radius, id, color , canvas, ctx, [colors --- optional].
+  this.balls.push(new Ball(100,100,-1,2,5,this.balls.length,'blue',this.canvas,this.ctx,['red','orange','yellow','green','blue','indigo','violet']))
+  this.balls.push(new Ball(300,40,-5,-4,5,this.balls.length,'red',this.canvas,this.ctx,['red','orange','yellow','green','blue','indigo','violet']))
 }
 
 Grid.prototype.createBricks = function(){
