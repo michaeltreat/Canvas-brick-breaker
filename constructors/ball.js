@@ -1,7 +1,6 @@
 'use strict'
 
 const Ball = function(x,y,vx,vy,radius,id,color,canvas,ctx, colors){
-
   this.x = x
   this.y = y
   this.vx = vx // Tracks the current trajectory of the x axies...
@@ -31,7 +30,6 @@ Ball.prototype.draw = function(){
     this.closeToWall = false
   }
   if(this.closeToWall) this.detectWall()
-
 
   ctx.beginPath();
   ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, true);
